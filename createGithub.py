@@ -12,6 +12,44 @@ class repoCreator:
     def __init__(self):
         self.email = str(input("enter github email: "))
         self.password = str(input("enter github password: "))
+        
+    def run(self):
+        x = str(input("1- for create new repo \n2- for update repo\n---enter choice: "))
+        if x == "1":
+            inputMessage = "repo name: "
+            projectName = ""
+            count = 0
+            while True:
+                count += 1
+                projectName = str(input(inputMessage))
+                if len(projectName) == 0:
+                    inputMessage = "repo name" + count * " plz" + ": "
+                else:
+                    inputMessage = "project dir: "
+                    projectDir = ""
+                    count = 0
+                    while True:
+                        count += 1
+                        projectDir = str(input(inputMessage))
+                        if len(projectDir) == 0:
+                            inputMessage = "project dir" + count * " plz" + ": "
+                        else:
+                            self.uploadRepo(projectName, projectDir)
+                            break
+        elif x == "2":
+            inputMessage = "project dir: "
+            projectDir = ""
+            count = 0
+            while True:
+                count += 1
+                projectDir = str(input(inputMessage))
+                if len(projectDir) == 0:
+                    inputMessage = "project dir" + count * " plz" + ": "
+                else:
+                    self.updateRepo(projectDir)
+                    break
+        else:
+            print("error choice")
 
     def auth(self, driver):
         # auth
@@ -20,7 +58,7 @@ class repoCreator:
         driver.find_element_by_id("password").send_keys(self.password)
         driver.find_element_by_id("password").send_keys(Keys.ENTER)
 
-    def makeRepo(self, driver, repoName: str, ):
+    def makeRepo(self, driver, repoName):
         wait = WebDriverWait(driver, 30)
         time.sleep(1)
         driver.get("https://github.com/new")
@@ -37,7 +75,7 @@ class repoCreator:
         repoUrl = driver.current_url
         return repoUrl
 
-    def uploadRepo(self, repoName: str, repoDir: str):
+    def uploadRepo(self, repoName, repoDir):
         driver = webdriver.Chrome()
         self.auth(driver)
         url = self.makeRepo(driver, repoName)
@@ -72,48 +110,16 @@ class repoCreator:
         os.system(cmdText)
         while True:
             print("__________________________ done __________________________________\n")
-            cmdText = str(input("1) update \n2) exit\n---enter choice: "))
+            cmdText = str(input("1) update \n2) restart\n3) exit\n---enter choice: "))
             if cmdText == "1":
                 self.updateRepo(repoDir)
+                break
+            elif cmdText == "2":
+                self.run()
                 break
             else:
                 break
 
 
 if __name__ == "__main__":
-    x = str(input("1- for create new repo \n2- for update repo\n---enter choice: "))
-    if x == "1":
-        inputMessage = "repo name: "
-        projectName = ""
-        count = 0
-        while True:
-            count += 1
-            projectName = str(input(inputMessage))
-            if len(projectName) == 0:
-                inputMessage = "repo name" + count * " plz" + ": "
-            else:
-                inputMessage = "project dir: "
-                projectDir = ""
-                count = 0
-                while True:
-                    count += 1
-                    projectDir = str(input(inputMessage))
-                    if len(projectDir) == 0:
-                        inputMessage = "project dir" + count * " plz" + ": "
-                    else:
-                        repoCreator().uploadRepo(projectName, projectDir)
-                        break
-    elif x == "2":
-        inputMessage = "project dir: "
-        projectDir = ""
-        count = 0
-        while True:
-            count += 1
-            projectDir = str(input(inputMessage))
-            if len(projectDir) == 0:
-                inputMessage = "project dir" + count * " plz" + ": "
-            else:
-                repoCreator().updateRepo(projectDir)
-                break
-    else:
-        print("error choice")
+    repoCreator().run()
