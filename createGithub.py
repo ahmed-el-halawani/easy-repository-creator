@@ -1,8 +1,6 @@
 # !/usr/bin/python
 import os
 import time
-import subprocess
-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
@@ -12,17 +10,17 @@ from selenium.webdriver.common.by import By
 
 class repoCreator:
     def __init__(self):
-        self.email = "agomaa528.ag@gmail.com"
-        self.password = "Aa01097033133"
+        self.email = "githubEmail"
+        self.password = "githubPasword"
 
-    def auth(self,driver):
+    def auth(self, driver):
         # auth
         driver.get("https://github.com/login")
         driver.find_element_by_id("login_field").send_keys(self.email)
         driver.find_element_by_id("password").send_keys(self.password)
         driver.find_element_by_id("password").send_keys(Keys.ENTER)
 
-    def makeRepo(self,driver, repoName: str, ):
+    def makeRepo(self, driver, repoName: str, ):
         wait = WebDriverWait(driver, 30)
         time.sleep(1)
         driver.get("https://github.com/new")
@@ -42,7 +40,7 @@ class repoCreator:
     def uploadRepo(self, repoName: str, repoDir: str):
         driver = webdriver.Chrome()
         self.auth(driver)
-        url = self.makeRepo(driver,repoName)
+        url = self.makeRepo(driver, repoName)
         # push file
         commands = [r'cd /D ' + repoDir + '&',
                     'git init &',
@@ -73,7 +71,7 @@ class repoCreator:
             cmdText += i
         os.system(cmdText)
         while True:
-            print("____________________________________________________________\n")
+            print("__________________________ done __________________________________\n")
             cmdText = str(input("1) update \n2) exit\n---enter choice: "))
             if cmdText == "1":
                 self.updateRepo(repoDir)
