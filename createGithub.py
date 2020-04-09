@@ -44,48 +44,48 @@ class repoCreator:
         self.auth()
         url = self.makeRepo(repoName)
         # push file
-        comands = [r'cd /D ' + repoDir + '&',
-                   'git init &',
-                   'echo ' + str(repoName) + ' >> README.md &',
-                   'git add README.md &',
-                   'git add * &'
-                   'git commit -m "init commit" &',
-                   'git remote add origin ' + str(url) +' &',
-                   'git push -u origin master &',
-                   'exit'
-                   ]
-        x = ""
-        for i in comands:
-            x += i
-        os.system(x)
-        self.updateRepo(url,repoDir)
+        commands = [r'cd /D ' + repoDir + '&',
+                    'git init &',
+                    'echo ' + str(repoName) + ' >> README.md &',
+                    'git add README.md &',
+                    'git add * &'
+                    'git commit -m "init commit" &',
+                    'git remote add origin ' + str(url) + ' &',
+                    'git push -u origin master &',
+                    'exit'
+                    ]
+        cmdText = ""
+        for i in commands:
+            cmdText += i
+        os.system(cmdText)
+        self.updateRepo(repoDir)
 
-    def updateRepo(self,repoUrl,repoDir):
+    def updateRepo(self, repoDir):
         commands = [r'cd /D ' + repoDir + '&',
                     'git pull origin master &'
                     'git add * &',
                     'git commit -m "init commit" &',
-                    # 'git remote add origin http://' + str(repoUrl) + '&',
                     'git push -u origin master &',
                     'exit'
                     ]
-        x = ""
+        cmdText = ""
         for i in commands:
-            x += i
-        os.system(x)
+            cmdText += i
+        os.system(cmdText)
         while True:
-            x = str(input("1) update \n2) exit"))
-            if x == "1":
-                self.updateRepo(repoUrl,repoDir)
+            cmdText = str(input("1) update \n2) exit\n---enter choice: "))
+            if cmdText == "1":
+                self.updateRepo(repoDir)
                 break
             else:
                 break
 
 
 if __name__ == "__main__":
-    x = str(input("1- for create new repo \n2- for update repo\n enter choice:  "))
-    if x=="1":
+    x = str(input("1- for create new repo \n2- for update repo\n---enter choice: "))
+    if x == "1":
         inputMessage = "repo name: "
+        projectName = ""
         count = 0
         while True:
             count += 1
@@ -94,6 +94,7 @@ if __name__ == "__main__":
                 inputMessage = "repo name" + count * " plz" + ": "
             else:
                 inputMessage = "project dir: "
+                projectDir = ""
                 count = 0
                 while True:
                     count += 1
@@ -105,6 +106,7 @@ if __name__ == "__main__":
                         break
     elif x == "2":
         inputMessage = "project dir: "
+        projectDir = ""
         count = 0
         while True:
             count += 1
@@ -112,15 +114,7 @@ if __name__ == "__main__":
             if len(projectDir) == 0:
                 inputMessage = "project dir" + count * " plz" + ": "
             else:
-                inputMessage = "repo url: "
-                count = 0
-                while True:
-                    count += 1
-                    projectUrl = str(input(inputMessage))
-                    if len(projectUrl) == 0:
-                        inputMessage = "repo url" + count * " plz" + ": "
-                    else:
-                        repoCreator().updateRepo(projectUrl,projectDir)
-                        break
+                repoCreator().updateRepo(projectDir)
+                break
     else:
         print("error choice")
