@@ -12,37 +12,37 @@ from selenium.webdriver.common.by import By
 
 class repoCreator:
     def __init__(self):
-        self.driver = webdriver.Chrome()
-        self.wait = WebDriverWait(self.driver, 30)
-
         self.email = "agomaa528.ag@gmail.com"
         self.password = "Aa01097033133"
 
-    def auth(self):
+    def auth(self,driver):
         # auth
-        self.driver.get("https://github.com/login")
-        self.driver.find_element_by_id("login_field").send_keys(self.email)
-        self.driver.find_element_by_id("password").send_keys(self.password)
-        self.driver.find_element_by_id("password").send_keys(Keys.ENTER)
+        driver.get("https://github.com/login")
+        driver.find_element_by_id("login_field").send_keys(self.email)
+        driver.find_element_by_id("password").send_keys(self.password)
+        driver.find_element_by_id("password").send_keys(Keys.ENTER)
 
-    def makeRepo(self, repoName: str):
+    def makeRepo(self,driver, repoName: str, ):
+        wait = WebDriverWait(driver, 30)
         time.sleep(1)
-        self.driver.get("https://github.com/new")
+        driver.get("https://github.com/new")
+
         # create repo
-        create = self.driver.find_element_by_id("repository_name")
+        create = driver.find_element_by_id("repository_name")
         create.send_keys(repoName)
         time.sleep(1)
-        self.driver.find_element_by_css_selector("button.btn.btn-primary.first-in-line").submit()
+        driver.find_element_by_css_selector("button.btn.btn-primary.first-in-line").submit()
         print("submit...")
 
         # after create repo
-        self.wait.until(expected_conditions.presence_of_element_located((By.TAG_NAME, "body")))
-        repoUrl = self.driver.current_url
+        wait.until(expected_conditions.presence_of_element_located((By.TAG_NAME, "body")))
+        repoUrl = driver.current_url
         return repoUrl
 
     def uploadRepo(self, repoName: str, repoDir: str):
-        self.auth()
-        url = self.makeRepo(repoName)
+        driver = webdriver.Chrome()
+        self.auth(driver)
+        url = self.makeRepo(driver,repoName)
         # push file
         commands = [r'cd /D ' + repoDir + '&',
                     'git init &',
@@ -73,6 +73,7 @@ class repoCreator:
             cmdText += i
         os.system(cmdText)
         while True:
+            print("____________________________________________________________\n")
             cmdText = str(input("1) update \n2) exit\n---enter choice: "))
             if cmdText == "1":
                 self.updateRepo(repoDir)
