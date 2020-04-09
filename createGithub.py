@@ -10,8 +10,8 @@ from selenium.webdriver.common.by import By
 
 class repoCreator:
     def __init__(self):
-        self.email = "githubEmail"
-        self.password = "githubPasword"
+        self.email = str(input("enter github email: "))
+        self.password = str(input("enter github password: "))
 
     def auth(self, driver):
         # auth
