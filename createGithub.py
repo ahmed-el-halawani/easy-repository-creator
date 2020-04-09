@@ -64,8 +64,8 @@ class repoCreator:
         commands = [r'cd /D ' + repoDir + '&',
                     'git pull origin master &'
                     'git add * &',
-                    'git commit -m "init commit2" &',
-                    'git remote add origin http://' + str(repoUrl) + '&',
+                    'git commit -m "init commit" &',
+                    # 'git remote add origin http://' + str(repoUrl) + '&',
                     'git push -u origin master &',
                     'exit'
                     ]
