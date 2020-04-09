@@ -63,8 +63,8 @@ class repoCreator:
     def updateRepo(self,repoUrl,repoDir):
         commands = [r'cd /D ' + repoDir + '&',
                     'git add * &',
-                    'git commit -m "init commit" &',
-                    'git remote add origin ' + str(repoUrl) + '&',
+                    'git commit -m "init commit2" &',
+                    'git remote add origin http://' + str(repoUrl) + '&',
                     'git push -u origin master &',
                     'exit'
                     ]
